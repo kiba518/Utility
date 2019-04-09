@@ -359,6 +359,30 @@ namespace Utility
         }
         #endregion
 
+        #region 获取指定目录中的子目录列表
+        /// <summary>  
+        /// 获取指定目录中所有子目录最后目录名列表,若要搜索嵌套的子目录列表,请使用重载方法.  
+        /// </summary>  
+        /// <param name="directoryPath">指定目录的绝对路径</param>          
+        public static List<string> GetLastDirectories(string directoryPath)
+        {
+            try
+            {
+                List<string> ret = new List<string>();
+                var tempList = Directory.GetDirectories(directoryPath);
+
+                foreach (var item in tempList)
+                {
+                    ret.Add(Path.GetFileNameWithoutExtension(item));
+                }
+                return ret;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         #region 向文本文件写入内容
         /// <summary>  
         /// 向文本文件中写入内容  
