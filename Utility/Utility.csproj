@@ -57,10 +57,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PurchasePlatform\DLL\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NPinyin, Version=0.2.4588.20158, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\WorkFolder\采购平台-数据\PurchasePlatformData\PurchasePlatformData.Common\Dll\NPinyin.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -111,6 +107,14 @@
     <Compile Include="Tool\XmlHelper.cs" />
     <Compile Include="Tool\MacthColumn.cs" />
     <Compile Include="Tool\ZipUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLL\Aspose.Cells.dll" />
+    <Content Include="DLL\Aspose.Cells.GridDesktop.dll" />
+    <Content Include="DLL\Aspose.Cells.GridWeb.dll" />
+    <Content Include="DLL\AutoMapper.dll" />
+    <Content Include="DLL\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="DLL\log4net.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
