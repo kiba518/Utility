@@ -382,6 +382,7 @@ namespace Utility
                 return null;
             }
         }
+        #endregion
 
         #region 向文本文件写入内容
         /// <summary>  

@@ -83,6 +83,7 @@
     <Compile Include="Log\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\AutoMapperHelper.cs" />
+    <Compile Include="Tool\ByteHelper.cs" />
     <Compile Include="Tool\CMDHelper.cs" />
     <Compile Include="Tool\FlieHelper.cs" />
     <Compile Include="Tool\ConfigHelper.cs" />
