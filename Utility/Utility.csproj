@@ -80,6 +80,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tool\DeviceHelper.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Error\InnerExcepiton.cs" />
     <Compile Include="File\FileHelper.cs" />
