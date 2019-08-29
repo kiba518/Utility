@@ -14,7 +14,48 @@ namespace Utility
 {
     public static class ImageHelper
     {
-        public static System.Drawing.Bitmap ConvertByteArrayToBitmap(byte[] bytes)
+        private static BitmapImage BitmapSourceToBitmapImage(BitmapSource bitmapSource)
+        {
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            MemoryStream memoryStream = new MemoryStream();
+            BitmapImage bImg = new BitmapImage();
+            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+            encoder.Save(memoryStream);
+            memoryStream.Position = 0;
+            bImg.BeginInit();
+            bImg.StreamSource = memoryStream;
+            bImg.EndInit();
+            memoryStream.Close();
+            return bImg;
+        }
+        public static byte[] BitmapSourceToBytes(BitmapSource bitmapSource)
+        {
+            byte[] buffer = null;
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            MemoryStream memoryStream = new MemoryStream();
+            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+            encoder.Save(memoryStream);
+            memoryStream.Position = 0;
+            if (memoryStream.Length > 0)
+            {
+                using (BinaryReader br = new BinaryReader(memoryStream))
+                {
+                    buffer = br.ReadBytes((int)memoryStream.Length);
+                }
+            }
+            memoryStream.Close();
+            return buffer;
+        }
+        public static byte[] BitmapToByte(System.Drawing.Bitmap bmp)
+        {
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            byte[] bytes = ms.GetBuffer(); 
+            ms.Close();
+            return bytes;
+        }
+
+        public static System.Drawing.Bitmap ByteArrayToBitmap(byte[] bytes)
         {
             System.Drawing.Bitmap img = null;
             try
@@ -71,7 +112,23 @@ namespace Utility
                 return image;
             }
         }
- 
+        public static BitmapImage BytesToBitmapImage(byte[] byteArray)
+        {
+            BitmapImage bmp = null;
+
+            try
+            {
+                bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.StreamSource = new MemoryStream(byteArray);
+                bmp.EndInit();
+            }
+            catch
+            {
+                bmp = null;
+            }
+            return bmp;
+        }
         // ImageSource --> Bitmap
         public static System.Drawing.Bitmap ImageSourceToBitmap(ImageSource imageSource)
         {
@@ -174,23 +231,7 @@ namespace Utility
             mem.Close();
             return ret;
         }
-        public static BitmapImage BytesToBitmapImage(byte[] byteArray)
-        {
-            BitmapImage bmp = null;
-
-            try
-            {
-                bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.StreamSource = new MemoryStream(byteArray);
-                bmp.EndInit();
-            }
-            catch
-            {
-                bmp = null;
-            }
-            return bmp;
-        }
+       
         public static byte[] BitmapImageToBytes(BitmapImage bmp)
         {
             byte[] byteArray = null;
@@ -265,6 +306,48 @@ namespace Utility
             MemoryStream ms = new MemoryStream(buffer);
             Image image = System.Drawing.Image.FromStream(ms);
             return image;
+        }
+        
+        public static Bitmap BytesToBitmap(byte[] buffer)
+        {
+            MemoryStream ms = new MemoryStream(buffer);
+            Image image = System.Drawing.Image.FromStream(ms);
+            return (Bitmap)image;
+        }
+        //获取网格对齐尺寸
+        public static int GetAlignedDimension(int dimension, int mod)
+        {
+            var modResult = dimension % mod;
+            if (modResult == 0)
+            {
+                return dimension;
+            } 
+            return dimension + mod - (dimension % mod);
+        }
+        /// <summary>
+        /// IntPtr To Bitmap
+        /// </summary>
+        /// <param name="source">指针</param>
+        /// <param name="w">宽</param>
+        /// <param name="h">高</param>
+        /// <param name="bitsPerPixel">位像素 32或者24 </param>
+        /// <returns></returns>
+        public static Bitmap IntPtrToBitmap(IntPtr source, int w, int h, int bitsPerPixel)
+        {
+            var pitches = GetAlignedDimension((w * bitsPerPixel) / 8, 32);
+            var lines = GetAlignedDimension(h, 32);
+            var size = pitches * lines;
+            System.Drawing.Imaging.PixelFormat pixelFormat;
+            if (bitsPerPixel == 32)
+            {
+                pixelFormat = System.Drawing.Imaging.PixelFormat.Format32bppRgb;
+            }
+            else
+            {
+                pixelFormat = System.Drawing.Imaging.PixelFormat.Format24bppRgb;
+            }
+            var bmp = new System.Drawing.Bitmap((int)w, (int)h, (int)pitches, pixelFormat, source);
+            return bmp;
         }
 
         /// <summary>
