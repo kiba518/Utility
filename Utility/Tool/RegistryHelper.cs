@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Utility 
-{
+namespace Utility
+{ 
+    // Registry.LocalMachine.CreateSubKey("SOFTWARE\\XXX");
     public class RegistryHelper
     {
         public static int AutoRunApplication(string fileName, bool isAutoRun)
         {
-
             int resset = 0;
             RegistryKey reg = null;
             try
@@ -59,11 +59,11 @@ namespace Utility
             return resset;
         }
         /// <summary>
-        /// 读取指定名称的注册表的值  RegistryHelper rh = new RegistryHelper();  string portName = rh.GetRegistryData(Registry.LocalMachine, "SOFTWARE\\TagReceiver\\Params\\SerialPort", "PortName");
+        /// 读取指定名称的注册表的值 string portName = RegistryHelper.GetRegistryData(Registry.LocalMachine, "SOFTWARE\\TagReceiver\\Params\\SerialPort", "PortName");
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public string GetRegistryData(RegistryKey root, string subkey, string name)
+        public static string GetValue(RegistryKey root, string subkey, string name)
         {
             string registData = "";
             RegistryKey myKey = root.OpenSubKey(subkey, true);
@@ -76,11 +76,11 @@ namespace Utility
         }
 
         /// <summary>
-        /// 向注册表中写数据 RegistryHelper rh = new RegistryHelper(); rh.SetRegistryData(Registry.LocalMachine, "SOFTWARE\\TagReceiver\\Params\\SerialPort", "PortName", portName);
+        /// 向注册表中写数据 RegistryHelper.SetRegistryData(Registry.LocalMachine, "SOFTWARE\\TagReceiver\\Params\\SerialPort", "PortName", portName);
         /// </summary>
         /// <param name="name"></param>
         /// <param name="tovalue"></param> 
-        public void SetRegistryData(RegistryKey root, string subkey, string name, string value)
+        public static void SetValue(RegistryKey root, string subkey, string name, string value)
         {
             RegistryKey aimdir = root.CreateSubKey(subkey);
             aimdir.SetValue(name, value);
@@ -90,7 +90,7 @@ namespace Utility
         /// 删除注册表中指定的注册表项
         /// </summary>
         /// <param name="name"></param>
-        public void DeleteRegist(RegistryKey root, string subkey, string name)
+        public static void Delete(RegistryKey root, string subkey, string name)
         {
             string[] subkeyNames;
             RegistryKey myKey = root.OpenSubKey(subkey, true);
@@ -107,21 +107,23 @@ namespace Utility
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool IsRegistryExist(RegistryKey root, string subkey, string name)
+        public static bool IsExist(RegistryKey root, string subkey, string name)
         {
             bool _exit = false;
-            string[] subkeyNames;
+            string[] valueNames;
             RegistryKey myKey = root.OpenSubKey(subkey, true);
-            subkeyNames = myKey.GetSubKeyNames();
-            foreach (string keyName in subkeyNames)
+            if (myKey != null)
             {
-                if (keyName == name)
+                valueNames = myKey.GetValueNames();
+                foreach (string keyName in valueNames)
                 {
-                    _exit = true;
-                    return _exit;
+                    if (keyName == name)
+                    {
+                        _exit = true;
+                        return _exit;
+                    }
                 }
             }
-
             return _exit;
         }
     }
