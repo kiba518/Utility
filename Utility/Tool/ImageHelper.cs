@@ -14,6 +14,74 @@ namespace Utility
 {
     public static class ImageHelper
     {
+        public static byte[] GetBitmapRGBA(Bitmap srcBitmap)
+        {
+            System.Drawing.Color srcColor;
+            int wide = srcBitmap.Width;
+            int height = srcBitmap.Height;
+            byte[] byteList = new byte[wide * height * 4];
+            int i = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < wide; x++)
+                {
+                    //获取像素的ＲＧＢ颜色值 
+                    srcColor = srcBitmap.GetPixel(x, y);
+                    byteList[i] = srcColor.R;
+                    byteList[i + 1] = srcColor.G;
+                    byteList[i + 2] = srcColor.B;
+                    byteList[i + 3] = srcColor.A;
+                    i = i + 4;
+                }
+            }
+            return byteList;
+        }
+
+        public static byte[] GetBitmapRGB(Bitmap srcBitmap)
+        {
+            System.Drawing.Color srcColor;
+            int wide = srcBitmap.Width;
+            int height = srcBitmap.Height;
+            byte[] byteList = new byte[wide * height*3];
+            int i = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < wide; x++)
+                {
+                    //获取像素的ＲＧＢ颜色值 
+                    srcColor = srcBitmap.GetPixel(x, y);
+                    byteList[i] = srcColor.R;
+                    byteList[i + 1] = srcColor.G;
+                    byteList[i + 2] = srcColor.B;
+                    i = i + 3;
+                }
+            }
+            return byteList;
+        }
+   
+        public static BitmapImage BitmapToBitmapImage2(Bitmap bmp)
+        {
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            byte[] bytes = ms.ToArray();
+
+            BitmapImage bmpimg = null;
+
+            try
+            {
+                bmpimg = new BitmapImage();
+                bmpimg.BeginInit();
+                bmpimg.StreamSource = ms;
+                bmpimg.EndInit();
+            }
+            catch
+            {
+                bmpimg = null;
+            }
+            ms.Close();
+            return bmpimg; 
+           
+        }
         private static BitmapImage BitmapSourceToBitmapImage(BitmapSource bitmapSource)
         {
             JpegBitmapEncoder encoder = new JpegBitmapEncoder();
