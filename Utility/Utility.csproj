@@ -101,6 +101,7 @@
     <Compile Include="Tool\JsonHelper.cs" />
     <Compile Include="Tool\IsNullAttribute.cs" />
     <Compile Include="Tool\MemberInfoGetting.cs" />
+    <Compile Include="Tool\NetHelper.cs" />
     <Compile Include="Tool\RegistryHelper.cs" />
     <Compile Include="Tool\UFunction.cs" />
     <Compile Include="Tool\PinYinTool.cs" />
