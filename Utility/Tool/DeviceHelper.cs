@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.CoreAudioApi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,21 @@ namespace Utility
                 }
             }
             return result;
-        }  
-
+        }
+        public static List<string> GetAudioDeviceFriendlyName()
+        {
+            List<string> result = new List<string>();
+            var enumerator = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+            //允许你在某些状态下枚举渲染设备
+            var endpoints = enumerator.EnumerateAudioEndPoints(DataFlow.All, DeviceState.Unplugged | DeviceState.Active);
+            foreach (var endpoint in endpoints)
+            {
+                if (endpoint.State == DeviceState.Active)
+                {
+                    result.Add(endpoint.FriendlyName);
+                }
+            }
+            return result.Distinct().ToList();
+        }
     } 
 }
