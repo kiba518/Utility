@@ -384,7 +384,7 @@ namespace Utility
         }
         #endregion
 
-        #region 向文本文件写入内容
+        #region 向文本文件写入内容 如果目标存在则覆盖
         /// <summary>  
         /// 向文本文件中写入内容  
         /// </summary>  
