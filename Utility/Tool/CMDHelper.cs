@@ -65,6 +65,26 @@ namespace Utility
             }
 
         }
+        public static bool Start(string programPath, string para)
+        {
+            try
+            {
+                Process myProcess = new Process();
+                myProcess.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                myProcess.StartInfo.UseShellExecute = false;
+                myProcess.StartInfo.FileName = programPath;
+                myProcess.StartInfo.CreateNoWindow = true;
+                myProcess.StartInfo.Arguments = para;
+                myProcess.EnableRaisingEvents = false;
+                bool boo = myProcess.Start();
+                return boo;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
         public static bool IsAdministrator()
         {
             /**
