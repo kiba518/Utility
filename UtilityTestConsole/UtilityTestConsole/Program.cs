@@ -11,7 +11,9 @@ namespace UtilityTestConsole
     {
         static void Main(string[] args)
         {
+            Logger.Debug("s");
             //DeviceHelper.GetAudioDeviceFriendlyName();
+            Console.Read();
         }
     }
 }
