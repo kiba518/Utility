@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -691,6 +692,78 @@ namespace Utility
             img.Dispose();
             bmpCrop.Dispose();
         }
+
+        #region base64转图片
+        /// <summary>
+        /// 图片上传 Base64解码
+        /// </summary>
+        /// <param name="dataURL">Base64数据</param>
+        /// <param name="imgName">图片名字</param>
+        /// <returns>返回一个相对路径</returns>
+        public static string Base64ToImage(string dataURL, string imgName)
+        {
+
+            string filename = "";//声明一个string类型的相对路径
+
+            String base64 = dataURL.Substring(dataURL.IndexOf(",") + 1);      //将‘，’以前的多余字符串删除
+            System.Drawing.Bitmap bitmap = null;//定义一个Bitmap对象，接收转换完成的图片
+
+            try//会有异常抛出，try，catch一下
+            {
+
+                byte[] arr = Convert.FromBase64String(base64);//将纯净资源Base64转换成等效的8位无符号整形数组
+
+                System.IO.MemoryStream ms = new System.IO.MemoryStream(arr);//转换成无法调整大小的MemoryStream对象
+                bitmap = new System.Drawing.Bitmap(ms);//将MemoryStream对象转换成Bitmap对象
+
+                filename = imgName + ".jpg";//所要保存的相对路径及名字
+                string url = HttpRuntime.AppDomainAppPath.ToString();
+                string tmpRootDir = System.Web.HttpContext.Current.Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString()); //获取程序根目录 
+                string imagesurl2 = tmpRootDir + filename; //转换成绝对路径 
+                bitmap.Save(imagesurl2, System.Drawing.Imaging.ImageFormat.Jpeg);//保存到服务器路径
+                //bitmap.Save(filePath + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                //bitmap.Save(filePath + ".gif", System.Drawing.Imaging.ImageFormat.Gif);
+                //bitmap.Save(filePath + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                ms.Close();//关闭当前流，并释放所有与之关联的资源
+                bitmap.Dispose();
+            }
+            catch (Exception e)
+            {
+                string massage = e.Message;
+            }
+            return filename;//返回相对路径
+        }
+        #endregion
+
+        #region 图片转base64
+        /// <summary>
+        /// 图片转base64
+        /// </summary>
+        /// <param name="path">图片路径</param><br>        /// <returns>返回一个base64字符串</returns>
+        public static string ImageToBase64(string path)
+        {
+            string base64str = "";
+
+            try
+            {
+                //读图片转为Base64String
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(path);
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byte[] arr = new byte[ms.Length];
+                ms.Position = 0;
+                ms.Read(arr, 0, (int)ms.Length);
+                ms.Close();
+                bmp.Dispose();
+                base64str = Convert.ToBase64String(arr);
+            }
+            catch (Exception e)
+            {
+                string mss = e.Message;
+            }
+            return "data:image/jpg;base64," + base64str;
+        }
+        #endregion
     }
 
 }
