@@ -741,6 +741,11 @@ namespace Utility
             return File.ReadAllText(filePath);
         }
         #endregion
-
+        #region 读取全部内容到字符串
+        public static byte[] ReadAllBytes(string filePath)
+        {
+            return File.ReadAllBytes(filePath);
+        }
+        #endregion
     }
 }
