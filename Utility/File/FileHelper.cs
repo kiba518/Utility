@@ -741,7 +741,7 @@ namespace Utility
             return File.ReadAllText(filePath);
         }
         #endregion
-        #region 读取全部内容到字符串
+        #region 读取全部内容到byte
         public static byte[] ReadAllBytes(string filePath)
         {
             return File.ReadAllBytes(filePath);
